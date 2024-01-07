@@ -1,0 +1,38 @@
+<!-- pythongames/templates/pythongames/hangman.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hangman Game</title>
+</head>
+<body>
+    <h1>Welcome to Hangman!</h1>
+    <p>{{ hangman_result.message }}</p>
+    
+    <!-- Display Hangman stages -->
+    <pre>{{ hangman_result.stages }}</pre>
+
+    <!-- Display the current state of the chosen word -->
+    <p>Chosen Word: {{ hangman_result.display }}</p>
+
+    <!-- Add a form for submitting guesses -->
+    <form method="post" action="{% url 'pythongames:hangman' %}">
+        {% csrf_token %}
+        <label for="guess">Enter your guess:</label>
+        <input type="text" name="guess" maxlength="1" required>
+        <input type="submit" value="Submit Guess">
+    </form>
+
+    <!-- Add buttons for restarting and quitting -->
+    <form method="post" action="{% url 'pythongames:restart' %}">
+        {% csrf_token %}
+        <input type="submit" value="Restart Game">
+    </form>
+
+    <form method="post" action="{% url 'pythongames:quit' %}">
+        {% csrf_token %}
+        <input type="submit" value="Quit and Generate New Word">
+    </form>
+</body>
+</html>
