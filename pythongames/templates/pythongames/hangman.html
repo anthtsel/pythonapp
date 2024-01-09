@@ -1,38 +1,113 @@
-<!-- pythongames/templates/pythongames/hangman.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hangman Game</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'pythongames/style.css' %}">
 </head>
 <body>
-    <h1>Welcome to Hangman!</h1>
-    <p>{{ hangman_result.message }}</p>
+    <h1>Hangman Game</h1>
     
-    <!-- Display Hangman stages -->
-    <pre>{{ hangman_result.stages }}</pre>
+    <!-- Display the hangman -->
+    <div>
+        {% if game.attempts_left == 6 %}
+            <pre>
+            ________
+            |      |
+            |
+            |
+            |
+            |
+            </pre>
+        {% elif game.attempts_left == 5 %}
+            <pre>
+            ________
+            |      |
+            |      O
+            |
+            |
+            |
+            </pre>
+        {% elif game.attempts_left == 4 %}
+            <pre>
+            ________
+            |      |
+            |      O
+            |      |
+            |
+            |
+            </pre>
+        {% elif game.attempts_left == 3 %}
+            <pre>
+            ________
+            |      |
+            |      O
+            |     /|
+            |
+            |
+            </pre>
+        {% elif game.attempts_left == 2 %}
+            <pre>
+            ________
+            |      |
+            |      O
+            |     /|\
+            |
+            |
+            </pre>
+        {% elif game.attempts_left == 1 %}
+            <pre>
+            ________
+            |      |
+            |      O
+            |     /|\
+            |     /
+            |
+            </pre>
+        {% elif game.attempts_left == 0 %}
+            <pre>
+            ________
+            |      |
+            |      O
+            |     /|\
+            |     / \
+            |
+            </pre>
+        {% endif %}
+    </div>
+    
+    <p>Attempts left: {{ game.attempts_left }}</p>
+    <p>Word: {{ game.display_word }}</p>
 
-    <!-- Display the current state of the chosen word -->
-    <p>Chosen Word: {{ hangman_result.display }}</p>
-
-    <!-- Add a form for submitting guesses -->
-    <form method="post" action="{% url 'pythongames:hangman' %}">
+    {% if not game_over %}
+    <form method="post" action="{% url 'pythongames:hangman' game_id=game.id %}">
         {% csrf_token %}
-        <label for="guess">Enter your guess:</label>
-        <input type="text" name="guess" maxlength="1" required>
-        <input type="submit" value="Submit Guess">
+        <label for="guessed_letter">Guess a letter:</label>
+        <input type="text" name="guessed_letter" maxlength="1" required>
+        <button type="submit">Submit</button>
     </form>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#hangman-form').submit(function (event) {
+                event.preventDefault();  // Prevent the default form submission
+                $('#guessed_letter').focus();  // Focus on the input field
+                // Optionally, you can add an AJAX call here to submit the form data asynchronously
+            });
+        });
+    </script>
+{% endif %}
 
-    <!-- Add buttons for restarting and quitting -->
-    <form method="post" action="{% url 'pythongames:restart' %}">
-        {% csrf_token %}
-        <input type="submit" value="Restart Game">
-    </form>
+{% if game_over %}
+    {% if '_' not in game.display_word %}
+        <p>You won!</p>
+    {% else %}
+        <p>You lost! The word was '{{ game.word }}'.</p>
+    {% endif %}
+    <a href="{% url 'pythongames:new_game' %}">Play Again</a>
+{% endif %}
 
-    <form method="post" action="{% url 'pythongames:quit' %}">
-        {% csrf_token %}
-        <input type="submit" value="Quit and Generate New Word">
-    </form>
 </body>
 </html>

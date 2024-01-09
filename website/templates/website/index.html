@@ -10,6 +10,13 @@
 <body>
     <h1>Welcome to My Python Website!</h1>
     <p>Check out our Python games:</p>
-    <a href="{% url 'pythongames:hangman' %}">Play Hangman</a>
+    
+    <!-- Link to start a new Hangman game -->
+    <a href="{% url 'pythongames:new_game' %}">Play Hangman</a>
+
+    <!-- If you want to display links for existing games -->
+    {% for game in games %}
+        <a href="{% url 'pythongames:hangman' game_id=game.id %}">Continue Game {{ game.id }}</a>
+    {% endfor %}
 </body>
 </html>

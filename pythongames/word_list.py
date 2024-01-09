@@ -1,4 +1,4 @@
-word_list = [
+words = [
 'abruptly', 
 'absurd', 
 'abyss', 
@@ -137,6 +137,7 @@ word_list = [
 'psyche', 
 'puppy', 
 'puzzling', 
+'python',
 'quartz', 
 'queue', 
 'quips', 

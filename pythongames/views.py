@@ -1,15 +1,31 @@
-# pythongames/views.py
-from django.shortcuts import render
-from game_logic.hangman_main import play_hangman_game
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import HangmanGame
+from .word_list import words
+import random
 
-def hangman(request):
-    hangman_result = play_hangman_game(request)
-    return render(request, 'pythongames/hangman.html', {'hangman_result': hangman_result})
+def new_game(request):
+    words = ['python', 'django', 'hangman', 'programming', 'web']
+    word = random.choice(words)
+    game = HangmanGame.objects.create(word=word)
+    return redirect('pythongames:hangman', game_id=game.id)
 
-def restart_game(request):
-    # Add logic to restart the game
-    return render(request, 'pythongames/restart.html')  # Create a new template for restarting
+def hangman_game(request, game_id):
+    game = get_object_or_404(HangmanGame, id=game_id)
 
-def quit_game(request):
-    # Add logic to quit the game and generate a new word
-    return render(request, 'pythongames/quit.html')  # Create a new template for quitting
+    if request.method == 'POST':
+        guessed_letter = request.POST.get('guessed_letter').lower()
+
+        if guessed_letter.isalpha() and guessed_letter not in game.guessed_letters:
+            game.guessed_letters += guessed_letter
+
+            if guessed_letter not in game.word:
+                game.attempts_left -= 1
+
+            game.save()
+
+    context = {
+        'game': game,
+        'game_over': game.attempts_left == 0 or '_' not in game.display_word(),
+    }
+
+    return render(request, 'pythongames/hangman.html', context)

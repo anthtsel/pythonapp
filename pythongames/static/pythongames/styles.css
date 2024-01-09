@@ -1,12 +1,22 @@
-/* pythongames/static/pythongames/styles.css */
-
 body {
-    background-color: #f0f0f0;
     font-family: Arial, sans-serif;
+    text-align: center;
 }
 
 h1 {
-    color: #007bff;
+    color: #333;
 }
 
-/* Add more styles as needed */
+form {
+    margin-top: 20px;
+}
+
+p {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+button {
+    padding: 5px 10px;
+    font-size: 16px;
+}
