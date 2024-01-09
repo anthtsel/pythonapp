@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn Python Basics: Print Statement Example</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'pythonpractice/styles.css' %}">
+</head>
+<body>
+    <h1>Learn Python Basics: Print Statement Example</h1>
+
+    <p>A common use of the print statement is to display messages. Run the following code <code>print('Hello', 'World')</code>:</p>
+
+    <form method="post" action="{% url 'pythonpractice:print_example' %}">
+        {% csrf_token %}
+        <label for="user_input">Enter code:</label>
+        <input type="text" name="user_input" required>
+        <button type="submit">Run</button>
+    </form>
+
+    {% if user_input %}
+        <p>Your code: <code>{{ user_input }}</code></p>
+        {% if error %}
+            <p>Error: {{ error }}</p>
+        {% else %}
+            <p>Output: <strong>{{ result }}</strong></p>
+        {% endif %}
+    {% endif %}

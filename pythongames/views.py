@@ -4,7 +4,6 @@ from .word_list import words
 import random
 
 def new_game(request):
-    words = ['python', 'django', 'hangman', 'programming', 'web']
     word = random.choice(words)
     game = HangmanGame.objects.create(word=word)
     return redirect('pythongames:hangman', game_id=game.id)
