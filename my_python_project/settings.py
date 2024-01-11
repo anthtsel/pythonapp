@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'pythongames',
     'website',
     'pythonpractice',
+    'adventure',
 ]
 
 MIDDLEWARE = [

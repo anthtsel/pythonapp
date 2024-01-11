@@ -1,0 +1,91 @@
+<!-- adventure/game.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adventure Game</title>
+</head>
+<body>
+    {% if not name %}
+        <!-- Initial form to get the player's name -->
+        <form method="post" action="{% url 'intro' %}">
+            {% csrf_token %}
+            <label for="name">Enter your name:</label>
+            <input type="text" name="name" required>
+            <button type="submit">Start the adventure</button>
+        </form>
+    {% else %}
+        <p>Good luck, {{ name }}!</p>
+
+        {% if current_scene == 'intro_scene' %}
+    <!-- Display intro scene content and form -->
+            <p>You are at a crossroads, and you can choose to go down any of the four hallways. Where would you like to go?</p>
+            <form method="post" action="{% url 'introScene' %}">
+                {% csrf_token %}
+                <label for="user_input">Options: left/right/forward/backward</label>
+                <input type="text" name="user_input" required>
+                <button type="submit">Submit</button>
+            </form>
+        {% elif current_scene == 'show_skeletons' %}
+            <!-- Display showSkeletons content and form -->
+            <p>You see a wall of skeletons as you walk into the room. Someone is watching you. Where would you like to go?</p>
+            <form method="post" action="{% url 'show_skeletons' %}">
+                {% csrf_token %}
+                <label for="user_input">Options: left/backward/forward</label>
+                <input type="text" name="user_input" required>
+                <button type="submit">Submit</button>
+            </form>
+        {% elif current_scene == 'strange_creature' %}
+            <!-- Display strangeCreature content and form -->
+            <p>A strange ghoul-like creature has appeared. You can either run or fight it. What would you like to do?</p>
+            <form method="post" action="{% url 'strange_creature' %}">
+                {% csrf_token %}
+                <label for="user_input">Options: fight/flee</label>
+                <input type="text" name="user_input" required>
+                <button type="submit">Submit</button>
+            </form>
+        {% elif current_scene == 'haunted_room' %}
+            <!-- Display hauntedRoom content and form -->
+            <p>You hear strange voices. You think you have awoken some of the dead. Where would you like to go?</p>
+            <form method="post" action="{% url 'haunted_room' %}">
+                {% csrf_token %}
+                <label for="user_input">Options: right/left/backward</label>
+                <input type="text" name="user_input" required>
+                <button type="submit">Submit</button>
+            </form>
+        {% elif current_scene == 'camera_scene' %}
+            <!-- Display cameraScene content and form -->
+            <p>You see a camera that has been dropped on the ground. Someone has been here recently. Where would you like to go?</p>
+            <form method="post" action="{% url 'camera_scene' %}">
+                {% csrf_token %}
+                <label for="user_input">Options: forward/backward</label>
+                <input type="text" name="user_input" required>
+                <button type="submit">Submit</button>
+            </form>
+        {% elif current_scene == 'show_shadow_figure' %}
+            <!-- Display showShadowFigure content and form -->
+            <p>You see a dark shadowy figure appear in the distance. You are creeped out. Where would you like to go?</p>
+            <form method="post" action="{% url 'show_shadow_figure' %}">
+                {% csrf_token %}
+                <label for="user_input">Options: right/left/backward</label>
+                <input type="text" name="user_input" required>
+                <button type="submit">Submit</button>
+            </form>
+        {% endif %}
+
+        {% if error %}
+            <p style="color: red;">{{ error }}</p>
+        {% endif %}
+
+        {% if result %}
+            <p>{{ result }}</p>
+        {% endif %}
+
+        {% if game_over %}
+            <p><strong>Game over!</strong></p>
+        {% endif %}
+    {% endif %}
+</body>
+</html>

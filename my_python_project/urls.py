@@ -20,5 +20,8 @@ from django.urls import include, path
 
 urlpatterns = [
     path('pythongames/', include('pythongames.urls', namespace='pythongames')),
+    path('pythonpractice/', include('pythonpractice.urls', namespace='pythonpractice')),
     path('', include('website.urls')),
+    path('admin/', admin.site.urls),
+    path('adventure/', include('adventure.urls')),
 ]

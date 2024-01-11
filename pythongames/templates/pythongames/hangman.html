@@ -88,14 +88,10 @@
         <input type="text" name="guessed_letter" maxlength="1" required>
         <button type="submit">Submit</button>
     </form>
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
-        $(document).ready(function () {
-            $('#hangman-form').submit(function (event) {
-                event.preventDefault();  // Prevent the default form submission
-                $('#guessed_letter').focus();  // Focus on the input field
-                // Optionally, you can add an AJAX call here to submit the form data asynchronously
-            });
+        // JavaScript to focus the input field after form submission
+        document.getElementById('hangman-form').addEventListener('submit', function() {
+            document.querySelector('input[name="guessed_letter"]').focus();
         });
     </script>
 {% endif %}
