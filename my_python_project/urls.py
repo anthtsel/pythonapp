@@ -24,4 +24,5 @@ urlpatterns = [
     path('', include('website.urls')),
     path('admin/', admin.site.urls),
     path('adventure/', include('adventure.urls')),
+    path('tic_tac_toe/', include('tic_tac_toe.urls')),
 ]

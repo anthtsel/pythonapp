@@ -6,5 +6,6 @@ urlpatterns = [
     path('pythongames/', include('pythongames.urls', namespace='pythongames')),
     path('pythonpractice/', include('pythonpractice.urls', namespace='pythonpractice')),
     path('adventure/', include('adventure.urls')),
+    path('tic_tac_toe/', include('tic_tac_toe.urls')),
     # Add other URLs as needed
 ]

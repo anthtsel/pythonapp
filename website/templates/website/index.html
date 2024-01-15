@@ -19,8 +19,12 @@
         <p><a href="{% url 'pythongames:hangman' game_id=game.id %}">Continue Game {{ game.id }}</a></p>
     {% endfor %}
 
+     <!-- Link to start a new Tic Tac Toe game -->
+     {% load static %}
+     <p><a href="{% url 'tic_tac_toe:tic_tac_toe' %}">Start Tic Tac Toe</a></p>
+    
     <p><strong>Build Your Own Adventure:</strong></p>
-    <p><a href="{% url 'introScene' %}">Build Your Own Adventure</a></p>
+    <p><a href="{% url 'adventure:intro' %}">Start Adventure</a></p>
 
     <!-- Python Practice Examples -->
     <p><strong>Learn Python Basics:</strong></p>

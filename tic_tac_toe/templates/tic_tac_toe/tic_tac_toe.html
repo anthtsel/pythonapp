@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe</title>
+    <style>
+        pre {
+            font-family: 'Courier New', Courier, monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tic Tac Toe</h1>
+
+    <!-- Display tic tac toe -->
+    <div>
+        <pre>
+            Board Positions:
+            top_L | top_M | top_R
+            ------+-------+------
+            mid_L | mid_M | mid_R
+            ------+-------+------
+            low_L | low_M | low_R
+        </pre>
+        <pre>
+            {{ board.top_L|escape }}  | {{ board.top_M|escape }}  | {{ board.top_R|escape }}
+            ---+----+----
+            {{ board.mid_L|escape }}  | {{ board.mid_M|escape }}  | {{ board.mid_R|escape }}
+            ---+----+----
+            {{ board.low_L|escape }}  | {{ board.low_M|escape }}  | {{ board.low_R|escape }}
+        </pre>
+    </div>
+        <p>Current Turn: {{ user_marker }}</p>
+        <form method="post" action="{% url 'tic_tac_toe:tic_tac_toe' %}">
+            {% csrf_token %}
+            <label for="position">Move on which space? (Enter a position like 'top_L', 'mid_M', 'low_R'):</label>
+            <input type="text" name="position" id="position" required>
+            <input type="submit" value="Submit Move">
+        </form>
+</body>
+</html>
