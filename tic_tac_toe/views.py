@@ -9,8 +9,18 @@ board = {
     'low_L': ' ', 'low_M': ' ', 'low_R': ' ',
 }
 
-user_marker = random.choice(['X', 'O'])
-computer_marker = 'X' if user_marker == 'O' else 'O'
+# Initialize user and computer markers and the initial turn
+user_marker = None
+computer_marker = None
+current_turn = None
+
+def initialize_game():
+    global user_marker, computer_marker, current_turn
+    user_marker = random.choice(['X', 'O'])
+    computer_marker = 'X' if user_marker == 'O' else 'O'
+    current_turn = user_marker if user_marker == 'X' else computer_marker
+
+initialize_game()
 
 def update_board(position, marker):
     if board[position] == ' ':
@@ -27,20 +37,37 @@ def get_computer_move():
     else:
         return None
 
+def check_winner():
+    # Check rows, columns, and diagonals for a win
+    for row in ['top', 'mid', 'low']:
+        if board[f'{row}_L'] == board[f'{row}_M'] == board[f'{row}_R'] != ' ':
+            return board[f'{row}_L']  # Return the winning marker
+
+    for col in ['L', 'M', 'R']:
+        if board[f'top_{col}'] == board[f'mid_{col}'] == board[f'low_{col}'] != ' ':
+            return board[f'top_{col}']  # Return the winning marker
+
+    if board['top_L'] == board['mid_M'] == board['low_R'] != ' ':
+        return board['top_L']  # Return the winning marker
+
+    if board['top_R'] == board['mid_M'] == board['low_L'] != ' ':
+        return board['top_R']  # Return the winning marker
+
+    return None  # No winner
+
 def tic_tac_toe(request):
-    if ' ' in board.values() and computer_marker == 'X' and 'X' not in board.values():
-        # Computer's move
-        computer_position = get_computer_move()
-        if computer_position:
-            update_board(computer_position, computer_marker)
-            current_turn = user_marker  # Switch to user's turn
-    else:
-        current_turn = user_marker if ' ' in board.values() else computer_marker
-    
+    global current_turn
+
     # User's move
     if request.method == 'POST' and current_turn == user_marker:
         position = request.POST.get('position')
         update_board(position, user_marker)
+
+        # Check for a winner after user's move
+        winner = check_winner()
+        if winner:
+            return render(request, 'tic_tac_toe/tic_tac_toe.html', {'board': get_current_board_state(), 'user_marker': user_marker, 'computer_marker': computer_marker, 'current_turn': current_turn, 'winner': winner})
+
         current_turn = computer_marker  # Switch to computer's turn
 
     # Computer's move
@@ -49,6 +76,12 @@ def tic_tac_toe(request):
         if computer_position:
             time.sleep(1)  # Add a 1-second delay
             update_board(computer_position, computer_marker)
-            current_turn = user_marker  # Switch to user's turn
 
-    return render(request, 'tic_tac_toe/tic_tac_toe.html', {'board': get_current_board_state(), 'user_marker': user_marker, 'computer_marker': computer_marker, 'current_turn': current_turn})
+        # Check for a winner after computer's move
+        winner = check_winner()
+        if winner:
+            return render(request, 'tic_tac_toe/tic_tac_toe.html', {'board': get_current_board_state(), 'user_marker': user_marker, 'computer_marker': computer_marker, 'current_turn': current_turn, 'winner': winner})
+
+        current_turn = user_marker  # Switch to user's turn
+
+    return render(request, 'tic_tac_toe/tic_tac_toe.html', {'board': get_current_board_state(), 'user_marker': user_marker, 'computer_marker': computer_marker, 'current_turn': current_turn, 'winner': None})

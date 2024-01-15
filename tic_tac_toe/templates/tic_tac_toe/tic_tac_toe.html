@@ -15,6 +15,7 @@
 
     <!-- Display tic tac toe -->
     <div>
+        <!-- Board positions display -->
         <pre>
             Board Positions:
             top_L | top_M | top_R
@@ -23,6 +24,8 @@
             ------+-------+------
             low_L | low_M | low_R
         </pre>
+
+        <!-- Current state of the board -->
         <pre>
             {{ board.top_L|escape }}  | {{ board.top_M|escape }}  | {{ board.top_R|escape }}
             ---+----+----
@@ -31,12 +34,21 @@
             {{ board.low_L|escape }}  | {{ board.low_M|escape }}  | {{ board.low_R|escape }}
         </pre>
     </div>
-        <p>Current Turn: {{ user_marker }}</p>
-        <form method="post" action="{% url 'tic_tac_toe:tic_tac_toe' %}">
-            {% csrf_token %}
-            <label for="position">Move on which space? (Enter a position like 'top_L', 'mid_M', 'low_R'):</label>
-            <input type="text" name="position" id="position" required>
-            <input type="submit" value="Submit Move">
-        </form>
+
+    <!-- Display current turn -->
+    <p>Current Turn: {{ current_turn }}</p>
+
+    <!-- Display winner if there is one -->
+    {% if winner %}
+        <p>Winner: {{ winner }}</p>
+    {% endif %}
+
+    <!-- User move form -->
+    <form method="post" action="{% url 'tic_tac_toe:tic_tac_toe' %}">
+        {% csrf_token %}
+        <label for="position">Move on which space? (Enter a position like 'top_L', 'mid_M', 'low_R'):</label>
+        <input type="text" name="position" id="position" required>
+        <input type="submit" value="Submit Move">
+    </form>
 </body>
 </html>
