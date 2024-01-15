@@ -50,5 +50,9 @@
         <input type="text" name="position" id="position" required>
         <input type="submit" value="Submit Move">
     </form>
+    <form method="post" action="{% url 'tic_tac_toe:play_again' %}">
+        {% csrf_token %}
+        <input type="submit" value="Play Again">
+    </form>
 </body>
 </html>

@@ -1,6 +1,6 @@
 import random
 import time
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 # Initialize an empty board dictionary
 board = {
@@ -106,3 +106,13 @@ def tic_tac_toe(request):
         current_turn = user_marker  # Switch to user's turn
 
     return render(request, 'tic_tac_toe/tic_tac_toe.html', {'board': get_current_board_state(), 'user_marker': user_marker, 'computer_marker': computer_marker, 'current_turn': current_turn, 'winner': None})
+
+def play_again(request):
+    global board, user_marker, computer_marker, current_turn
+    board = {
+        'top_L': ' ', 'top_M': ' ', 'top_R': ' ',
+        'mid_L': ' ', 'mid_M': ' ', 'mid_R': ' ',
+        'low_L': ' ', 'low_M': ' ', 'low_R': ' ',
+    }
+    initialize_game()  # Reinitialize user_marker, computer_marker, and current_turn
+    return redirect('tic_tac_toe:tic_tac_toe')
