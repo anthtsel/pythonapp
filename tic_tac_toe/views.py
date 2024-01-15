@@ -82,12 +82,24 @@ def tic_tac_toe(request):
     # User's move
     if request.method == 'POST' and current_turn == user_marker:
         position = request.POST.get('position')
+
+        # Validate the user's input
+        if position not in board:
+            error_message = "Invalid input. Please enter a valid position (e.g., 'top_L', 'mid_M', 'low_R')."
+            return render(request, 'tic_tac_toe/tic_tac_toe.html', {'board': get_current_board_state(), 'user_marker': user_marker, 'computer_marker': computer_marker, 'current_turn': current_turn, 'error_message': error_message, 'winner': None})
+
+        # Check if the selected position is already occupied
+        if board[position] != ' ':
+            error_message = f"Invalid move. Position '{position}' is already occupied. Please choose an empty position."
+            return render(request, 'tic_tac_toe/tic_tac_toe.html', {'board': get_current_board_state(), 'user_marker': user_marker, 'computer_marker': computer_marker, 'current_turn': current_turn, 'error_message': error_message, 'winner': None})
+
+        # Update the board with the user's move
         update_board(position, user_marker)
 
         # Check for a winner after user's move
         winner = check_winner()
         if winner:
-            return render(request, 'tic_tac_toe/tic_tac_toe.html', {'board': get_current_board_state(), 'user_marker': user_marker, 'computer_marker': computer_marker, 'current_turn': current_turn, 'winner': winner})
+            return render(request, 'tic_tac_toe/tic_tac_toe.html', {'board': get_current_board_state(), 'user_marker': user_marker, 'computer_marker': computer_marker, 'current_turn': current_turn, 'winner': winner, 'error_message': None})
 
         current_turn = computer_marker  # Switch to computer's turn
 
@@ -101,11 +113,11 @@ def tic_tac_toe(request):
         # Check for a winner after computer's move
         winner = check_winner()
         if winner:
-            return render(request, 'tic_tac_toe/tic_tac_toe.html', {'board': get_current_board_state(), 'user_marker': user_marker, 'computer_marker': computer_marker, 'current_turn': current_turn, 'winner': winner})
+            return render(request, 'tic_tac_toe/tic_tac_toe.html', {'board': get_current_board_state(), 'user_marker': user_marker, 'computer_marker': computer_marker, 'current_turn': current_turn, 'winner': winner, 'error_message': None})
 
         current_turn = user_marker  # Switch to user's turn
 
-    return render(request, 'tic_tac_toe/tic_tac_toe.html', {'board': get_current_board_state(), 'user_marker': user_marker, 'computer_marker': computer_marker, 'current_turn': current_turn, 'winner': None})
+    return render(request, 'tic_tac_toe/tic_tac_toe.html', {'board': get_current_board_state(), 'user_marker': user_marker, 'computer_marker': computer_marker, 'current_turn': current_turn, 'winner': None, 'error_message': None})
 
 def play_again(request):
     global board, user_marker, computer_marker, current_turn
