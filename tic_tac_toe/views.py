@@ -30,6 +30,27 @@ def get_current_board_state():
     return board
 
 def get_computer_move():
+    # Check if computer can win in the next move
+    for pos in board.keys():
+        if board[pos] == ' ':
+            board[pos] = computer_marker
+            if check_winner() == computer_marker:
+                board[pos] = ' '  # Undo the move
+                return pos
+
+            board[pos] = ' '  # Undo the move
+
+    # Check if user can win in the next move and block them
+    for pos in board.keys():
+        if board[pos] == ' ':
+            board[pos] = user_marker
+            if check_winner() == user_marker:
+                board[pos] = computer_marker  # Block the user
+                return pos
+
+            board[pos] = ' '  # Undo the move
+
+    # If no immediate win/loss, choose a random move
     empty_positions = [pos for pos, marker in board.items() if marker == ' ']
 
     if empty_positions:
