@@ -1,13 +1,9 @@
-# adventure/urls.py
-
 from django.urls import path
-from .views import intro, introScene, showShadowFigure
+from .views import start_page, dungeon_adventure
 
 app_name = 'adventure'
 
 urlpatterns = [
-    path('intro/', intro, name='intro'),
-    path('intro_scene/', introScene, name='intro_scene'),
-    path('show_shadow_figure/', showShadowFigure, name='show_shadow_figure'),  # Add this line for showShadowFigure
-    # Add other URL patterns as needed
+    path('start_page/', start_page, name='start_page'),
+    path('dungeon_adventure/', dungeon_adventure, name='dungeon_adventure'),
 ]

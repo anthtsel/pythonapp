@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to My Python Website</title>
+    <title>Welcome to Py Dad Code Website</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'website/styles.css' %}">
     <style>
@@ -31,9 +31,10 @@
          {% load static %}
          <p><a href="{% url 'tic_tac_toe:tic_tac_toe' %}">Start Tic Tac Toe</a></p>
         
-        <p><strong>Build Your Own Adventure:</strong></p>
-        <p><a href="{% url 'adventure:intro' %}">Start Adventure</a></p>
-        
+         <!-- website/templates/website/index.html -->
+        <p><strong>Text-Based Dungeon Adventure:</strong></p>
+        <p><a href="{% url 'adventure:start_page' %}">Start Adventure</a></p>
+
         <!-- Python Practice Examples -->
         <p><strong>Learn Python Basics:</strong></p>
         <a href="{% url 'pythonpractice:print_example' %}">Print Example</a>
