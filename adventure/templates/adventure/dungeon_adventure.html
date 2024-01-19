@@ -29,7 +29,7 @@
         <p>Riddle: {{ riddles.current_riddle_key }}</p>
         <p>Your answer:</p>
         <!-- Form for solving riddle -->
-        <form action="{% url 'adventure:dungeon_adventure' %}" method="post">
+        <form action="{% url 'adventure:explore_room' current_room=current_room %}" method="post">
             {% csrf_token %}
             <label for="user_input">Enter your answer:</label>
             <input type="text" name="user_input" id="user_input" required>
@@ -37,12 +37,18 @@
         </form>
     {% else %}
         <!-- Form for exploring -->
-        <form action="{% url 'adventure:dungeon_adventure' %}" method="post">
+        <form action="{% url 'adventure:explore_room' current_room=current_room %}" method="post">
             {% csrf_token %}
             <label for="user_input">Enter your move:</label>
             <input type="text" name="user_input" id="user_input" required>
             <input type="submit" value="Submit Move">
         </form>
+
+        {% if current_artifact and current_riddle_key %}
+            <!-- Display the riddle text -->
+            <p>Riddle:</p>
+            <p>Riddle: {{ riddles.current_riddle_key }}</p>
+        {% endif %}
     {% endif %}
 
 </body>

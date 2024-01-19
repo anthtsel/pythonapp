@@ -1,49 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dungeon Adventure</title>
+    <title>Dungeon Game - Start Page</title>
 </head>
 <body>
-    <h2>{{ msg }}</h2>
-    
-    <p>
-        You are in the {{ current_room }}.<br>
-        Inventory: {{ inventory }}<br>
-        {% if nearby_artifact %}
-            {% if nearby_artifact not in inventory %}
-                {% if nearby_artifact|last == 's' %}
-                    You see {{ nearby_artifact }}
-                {% elif nearby_artifact|first in 'aeiou' %}
-                    You see an {{ nearby_artifact }}
-                {% else %}
-                    You see a {{ nearby_artifact }}
-                {% endif %}
-            {% endif %}
-        {% endif %}
-    </p>
-
-    {% if current_riddle_key %}
-        <p>Riddle: {{ riddles.current_riddle_key }}</p>
-        <p>Your answer:</p>
-            <!-- Form for solving riddle -->
-        <form action="{% url 'adventure:dungeon_adventure' %}" method="post">
-            {% csrf_token %}
-            <label for="user_input">Enter your answer:</label>
-            <input type="text" name="user_input" id="user_input" required>
-            <input type="submit" value="Submit Answer">
-        </form>
-    {% else %}
-        <!-- Form for exploring -->
-        <form action="{% url 'adventure:dungeon_adventure' %}" method="post">
-            {% csrf_token %}
-            <label for="user_input">Enter your move:</label>
-            <input type="text" name="user_input" id="user_input" required>
-            <input type="submit" value="Submit Move">
-        </form>
-    {% endif %}
-
+    <h1>Welcome to the Mystical Dungeon!</h1>
+    <p>Instructions:</p>
+    <ul>
+        <li>Explore different rooms in the dungeon.</li>
+        <li>Use the 'Explore' command followed by a direction to move.</li>
+        <li>If you find artifacts, type 'Grab [Artifact Name]' to collect them.</li>
+        <li>You must collect all six artifacts before facing the Dungeon Master.</li>
+    </ul>
+    <p>Click the button to start your adventure.</p>
+    <a href="{% url 'adventure:explore_room' current_room='Realm of Shadows' %}">Enter Dungeon</a>
 </body>
 </html>
