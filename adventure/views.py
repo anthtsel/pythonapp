@@ -21,9 +21,8 @@ def start_page(request):
     return render(request, 'adventure/start_page.html')
 
 # Function to present and solve riddles
-def solve_riddle(riddle, solution):
-    user_answer = input("Your answer: ").lower()
-    return user_answer == solution
+def solve_riddle(riddle_key, solution):
+    return riddles.get(riddle_key) == solution
 
 def explore_room(request, current_room=None):
     global game_state
@@ -75,7 +74,7 @@ def explore_room(request, current_room=None):
             if direction in dungeon_rooms[current_room]:
                 # Process the user's move and update the game state
                 current_room = dungeon_rooms[current_room][direction]
-                msg = f"You explore {direction}"
+                msg = f"You explore {direction}.\n"
 
                 # Check for artifact in the room
                 if "Artifact" in dungeon_rooms[current_room].keys():
@@ -105,46 +104,37 @@ def explore_room(request, current_room=None):
                         # No riddle for this artifact
                         if artifact_name_in_room not in inventory:
                             inventory.append(artifact_name_in_room)
-                            msg = f"{artifact_name_in_room} acquired!"
-                        else:
-                            msg = f"You already possess the {artifact_name_in_room}"
+                            msg = f"You found an artifact: {artifact_name_in_room}. Type 'Solve' to solve the riddle."
 
-                    # Update current_room after the "Grab" action
-                    exit_directions = dungeon_rooms[current_room].keys()
-                    if 'South' in exit_directions:  # Check if there is a South exit
-                        current_room = dungeon_rooms[current_room]['South']
-                        msg += f"\nYou explore South"
-                    else:
-                        msg += "\nThere's no exit to the South."
+                        # Update current_room after the "Grab" action
+                        msg += f"\nYou explore {current_room}"
 
-                    # Check for artifact in the new room
-                    if "Artifact" in dungeon_rooms[current_room].keys():
-                        nearby_artifact = dungeon_rooms[current_room]["Artifact"]
-                        if nearby_artifact not in inventory:
-                            msg += f"\nYou see {nearby_artifact}. Type 'Grab {nearby_artifact}' to collect it."
-
+                        # Check for artifact in the current room
+                        if "Artifact" in dungeon_rooms[current_room].keys():
+                            nearby_artifact = dungeon_rooms[current_room]["Artifact"]
+                            if nearby_artifact not in inventory:
+                                msg += f"\nYou see {nearby_artifact}. Type 'Grab {nearby_artifact}' to collect it."
                 else:
                     msg = f"Can't find {artifact}"
 
             except KeyError:
                 msg = f"Can't find {artifact}"
-            
-        if action == "Solve":
-            # Check if the user has a riddle to solve
-            if 'current_riddle_key' in game_state:
-                user_answer = user_input.lower()
-                correct_answer = riddles[game_state['current_riddle_key']].lower()
+         
+        elif action == "Solve":
+            try:
+                # Get the riddle details from the game state
+                riddle_key = game_state.get('current_riddle_key', '')
 
-                if user_answer == correct_answer:
-                    # Correct answer
-                    artifact_name = game_state['current_artifact']
-                    inventory.append(artifact_name)
-                    msg = f"Correct! You acquired {artifact_name}."
-                    del game_state['current_artifact']
-                    del game_state['current_riddle_key']
+                # Check if the riddle key is valid
+                if riddle_key:
+                    # Display the riddle to the user
+                    msg = f"Riddle: {riddles.get(riddle_key, '')}"
+
                 else:
-                    # Incorrect answer
-                    msg = "Incorrect answer. Try again or explore."
+                    msg = "No riddle to solve."
+
+            except KeyError:
+                msg = "Error while processing the riddle. Please try again."
 
     # Update the global game state
     game_state['current_room'] = current_room

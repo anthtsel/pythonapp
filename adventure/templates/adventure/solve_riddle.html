@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dungeon Adventure - Solve Riddle</title>
+</head>
+<body>
+    <h2>Solve the Riddle</h2>
+    
+    <p>Riddle: {{ riddles[riddle_key] }}</p>
+
+    <!-- Form for solving the riddle or exploring -->
+    <form action="{% url 'adventure:explore_room' current_room=current_room %}" method="post">
+        {% csrf_token %}
+        <label for="user_input">Enter your answer or explore a direction:</label>
+        <input type="text" name="user_input" id="user_input" required>
+        <input type="submit" value="Submit Answer">
+    </form>
+</body>
+</html>
