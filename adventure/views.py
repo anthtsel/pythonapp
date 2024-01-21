@@ -123,23 +123,18 @@ def explore_room(request, current_room=None):
             except KeyError:
                 msg = f"Can't find {artifact}"
          
+        # Inside the explore_room view function
         elif action == "Solve":
             riddle_key = game_state.get('current_riddle_key', '')
-            user_solution = request.POST.get('user_solution', '').strip()
+            user_solution = request.POST.get('user_input', '').strip()
 
-            if riddle_key and user_solution:
-                if check_riddle_solution(riddle_key, user_solution):
-                    # The user's answer is correct, so you can give them the artifact
-                    artifact_name = game_state['current_artifact']
-                    inventory.append(artifact_name)
-                    msg += f"You solved the riddle and found the {artifact_name}!\n"
-                    game_state['current_artifact'] = None
-                    game_state['current_riddle_key'] = None
-                else:
-                    # The user's answer is incorrect, so you can tell them to try again
-                    msg += "Sorry, that's not the correct answer. Try again.\n"
+            if riddle_key:
+                # Display the riddle form
+                msg = f"Riddle: {riddles.get(riddle_key)}\n"
+                msg += "Your answer:"
+                context['riddle_form'] = True  # Add this line to indicate the presence of the riddle form
             else:
-                msg += "You need to enter both a riddle key and a solution to solve the riddle.\n"
+                msg = "No riddle to solve.\n"
 
     # Update the global game state
     game_state['current_room'] = current_room

@@ -1,0 +1,33 @@
+<!-- calculator_app/templates/calculator_app/calculator.html -->
+<html>
+<head>
+    <title>Calculator</title>
+</head>
+<body>
+    <h1>{{ logo }}</h1>
+
+    <form method="post" action="{% url 'calculator' %}">
+        {% csrf_token %}
+        
+        <label for="num1">Enter the first number:</label>
+        <input type="number" name="num1" required>
+        
+        <label for="operation">Select an operation:</label>
+        <select name="operation" required>
+            <option value="+">Add</option>
+            <option value="-">Subtract</option>
+            <option value="*">Multiply</option>
+            <option value="/">Divide</option>
+        </select>
+        
+        <label for="num2">Enter the second number:</label>
+        <input type="number" name="num2" required>
+        
+        <button type="submit">Calculate</button>
+    </form>
+
+    {% if result %}
+        <p>Result: {{ result }}</p>
+    {% endif %}
+</body>
+</html>

@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'pythonpractice',
     'adventure',
     'tic_tac_toe',
+    'calculator',
 ]
 
 MIDDLEWARE = [

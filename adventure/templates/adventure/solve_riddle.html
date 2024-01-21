@@ -4,19 +4,23 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dungeon Adventure - Solve Riddle</title>
+    <title>Dungeon Adventure</title>
 </head>
 <body>
-    <h2>Solve the Riddle</h2>
-    
-    <p>Riddle: {{ riddles[riddle_key] }}</p>
+    <h2>{{ msg }}</h2>
 
-    <!-- Form for solving the riddle or exploring -->
-    <form action="{% url 'adventure:explore_room' current_room=current_room %}" method="post">
-        {% csrf_token %}
-        <label for="user_input">Enter your answer or explore a direction:</label>
-        <input type="text" name="user_input" id="user_input" required>
-        <input type="submit" value="Submit Answer">
-    </form>
+    {% if riddle_key %}
+        <p>Riddle: {{ riddles.riddle_key }}</p>
+        <p>Your answer:</p>
+        <!-- Form for solving riddle -->
+        <form action="{% url 'adventure:solve_riddle' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="riddle_key" value="{{ riddle_key }}">
+            <label for="user_solution">Enter your answer:</label>
+            <input type="text" name="user_solution" id="user_solution" required>
+            <input type="submit" value="Submit Answer">
+        </form>
+    {% endif %}
+
 </body>
 </html>
